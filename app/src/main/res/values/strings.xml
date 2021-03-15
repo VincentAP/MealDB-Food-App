@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Tugas SOA Vincent Ardyan Putra 2101658344</string>
+    <string name="homepage_bg_text">COMP8036 - ETY2-EAC\n\nVincent Ardyan Putra\n2101658344\n\nService Oriented Architecture</string>
+    <string name="food_menu"><u>Food Menu</u></string>
+    <string name="start_cooking_today">Start cooking today!</string>
+    <string name="features">Features</string>
+    <string name="challenge_yourself_generate_random_food_for_you_to_cook_today">Challenge yourself! Generate random food for you to cook today.</string>
+    <string name="food_of_the_day">Food of the day</string>
+    <string name="categories">Categories</string>
+    <string name="favorite">Favorites</string>
+    <string name="id_meal">id: %1$s</string>
+    <string name="no_data">No Data</string>
+    <string name="source"><u>source</u></string>
+    <string name="youtube"><u>youtube</u></string>
+    <string name="challenge_yourself">Challenge yourself!</string>
+    <string name="cook_any_food_that_you_get">Cook any food that you get</string>
+    <string name="random">Random</string>
+    <string name="food_detail">Food Detail</string>
+    <string name="search">Search…</string>
+    <string name="meal_db_api">The MealDB API</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="error_initializing">Error initializing</string>
+    <string name="filter">filter</string>
+    <string name="apply">Apply</string>
+</resources>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorActivityFavoriteWrapper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jaguar">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintFavoriteBGWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="@dimen/spacing_15"
+                android:layout_marginLeft="@dimen/spacing_15"
+                android:layout_marginTop="@dimen/spacing_13"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textPageType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:fontFamily="@font/russo_one_regular"
+                android:gravity="center_horizontal"
+                android:text="@string/favorite"
+                android:textColor="@color/OLSO_grey"
+                android:textSize="50sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintActivityFavoriteBottomSheetWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_90"
+        android:background="@drawable/rounded_background_58"
+        app:behavior_hideable="false"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <View
+            android:id="@+id/bottomActivityFavoriteSheetUpperLine"
+            android:layout_width="60dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/spacing_20"
+            android:background="@drawable/bottom_sheet_upper_line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerFavoriteRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_30"
+            app:layout_constraintTop_toBottomOf="@+id/bottomActivityFavoriteSheetUpperLine">
+
+            <LinearLayout
+                android:id="@+id/linearFavoriteShimmerWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+
+                <include layout="@layout/favorite_shimmer_placeholder" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFavorite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/bottomActivityFavoriteSheetUpperLine"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

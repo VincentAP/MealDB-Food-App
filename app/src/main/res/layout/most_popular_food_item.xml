@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardMostPopularFoodItemWrapper"
+    android:layout_width="230dp"
+    android:layout_height="350dp"
+    android:layout_marginEnd="@dimen/spacing_25"
+    android:layout_marginRight="@dimen/spacing_25"
+    app:cardBackgroundColor="@color/jaguar"
+    app:cardCornerRadius="@dimen/spacing_21"
+    app:cardElevation="@dimen/spacing_10">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintMostPopularFoodItemWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/spacing_5">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_13"
+            android:layout_marginLeft="@dimen/spacing_13"
+            android:layout_marginTop="@dimen/spacing_11"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_location" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_5"
+            android:layout_marginLeft="@dimen/spacing_5"
+            android:fontFamily="@font/russo_one_regular"
+            android:textColor="@color/OLSO_grey"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageArea"
+            app:layout_constraintLeft_toRightOf="@+id/imageArea"
+            app:layout_constraintTop_toTopOf="@+id/imageArea"
+            tools:text="Kenyan" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageFavorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="@dimen/spacing_15"
+            android:layout_marginRight="@dimen/spacing_15"
+            app:layout_constraintBottom_toBottomOf="@+id/textArea"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textArea"
+            app:srcCompat="@drawable/ic_unfavorite" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageFood"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:background="@drawable/image_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textFoodTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_17"
+            android:layout_marginLeft="@dimen/spacing_17"
+            android:ellipsize="end"
+            android:fontFamily="@font/russo_one_regular"
+            android:maxLines="2"
+            android:textColor="@color/OLSO_grey"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/guideline3"
+            tools:text="Mbuzi Choma (Roasted Goat)" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/textCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_20"
+            android:background="@drawable/rounded_blue_bg"
+            android:fontFamily="@font/russo_one_regular"
+            android:paddingLeft="@dimen/spacing_20"
+            android:paddingTop="@dimen/spacing_10"
+            android:paddingRight="@dimen/spacing_20"
+            android:paddingBottom="@dimen/spacing_10"
+            android:rotation="90"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="Goat" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.67" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.93" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

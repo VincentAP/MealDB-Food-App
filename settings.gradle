@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "Tugas SOA Vincent Ardyan Putra 2101658344"
