@@ -122,7 +122,7 @@ class Homepage : BaseActivity() {
                     isMostPopularFood = true
                     it.data?.let { it1 ->
                         if (!isFavoriteStateChanged && !isFromFavoritePage ||
-                            isFoodOfTheDayItem
+                            isFoodOfTheDayItem && !isFavoriteStateChanged
                         ) {
                             homepageViewModel.setData(it1)
                             isFoodOfTheDayItem = false

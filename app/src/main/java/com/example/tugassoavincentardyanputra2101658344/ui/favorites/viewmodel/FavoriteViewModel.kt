@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
-import com.airbnb.paris.extensions.layoutMarginTopDp
-import com.airbnb.paris.extensions.viewGroupStyle
 import com.example.tugassoavincentardyanputra2101658344.common.viewholder.ListItem
 import com.example.tugassoavincentardyanputra2101658344.common.viewholder.NoDataItem
 import com.example.tugassoavincentardyanputra2101658344.foundation.BaseViewModel
@@ -46,9 +44,7 @@ class FavoriteViewModel @Inject constructor(
                             it.strCategory ?: "",
                             it.idMeal,
                             isFromMostPopularFood = it.isFromMostPopularFood
-                        ).setContainerStyle(viewGroupStyle {
-                            layoutMarginTopDp(50)
-                        })
+                        )
                     )
                 } else {
                     items.add(
