@@ -59,7 +59,7 @@
         android:layout_marginTop="@dimen/spacing_90"
         android:background="@drawable/rounded_background_58"
         app:behavior_hideable="false"
-        app:layout_behavior="@string/bottom_sheet_behavior"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         tools:peekHeight="100dp">
 
         <View
