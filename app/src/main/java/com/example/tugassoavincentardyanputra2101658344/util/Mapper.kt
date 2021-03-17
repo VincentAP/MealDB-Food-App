@@ -146,7 +146,7 @@ fun List<MealItemResponse>.toBestFoodOfTheDay(): List<BestFoodOfTheDay> {
     return items
 }
 
-fun <T> T.toFavorite(): Favorite? {
+fun <T> T.toFavorite(isMostPopularFood: Boolean = false): Favorite? {
     return when (this) {
         is BestFoodOfTheDay -> {
             val it = this as BestFoodOfTheDay
@@ -322,7 +322,8 @@ fun <T> T.toFavorite(): Favorite? {
                 strSource = it.strSource,
                 strImageSource = it.strImageSource,
                 strCreativeCommonsConfirmed = it.strCreativeCommonsConfirmed,
-                dateModified = it.dateModified
+                dateModified = it.dateModified,
+                isFromMostPopularFood = isMostPopularFood
             )
         }
         else -> null

@@ -8,6 +8,7 @@ import com.example.tugassoavincentardyanputra2101658344.common.viewholder.ListIt
 import com.example.tugassoavincentardyanputra2101658344.common.viewholder.NoDataItem
 import com.example.tugassoavincentardyanputra2101658344.foundation.BaseViewModel
 import com.example.tugassoavincentardyanputra2101658344.repository.FavoriteRepository
+import com.example.tugassoavincentardyanputra2101658344.repository.FoodOfTheDayRepository
 import com.example.tugassoavincentardyanputra2101658344.repository.MostPopularFoodRepository
 import com.example.tugassoavincentardyanputra2101658344.util.BaseItem
 import com.example.tugassoavincentardyanputra2101658344.util.Resource
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
     private val mostPopularFoodRepository: MostPopularFoodRepository,
+    private val foodOfTheDayRepository: FoodOfTheDayRepository,
     private val favoriteRepository: FavoriteRepository
 ) : BaseViewModel() {
 
@@ -69,6 +71,7 @@ class FavoriteViewModel @Inject constructor(
         _isUpdated.value = Resource.loading(null)
         val job = viewModelScope.launch {
             if (isFromMostPopularFood) mostPopularFoodRepository.updateFavoriteField(false, idMeal)
+            else foodOfTheDayRepository.updateFavoriteField(false, idMeal)
             favoriteRepository.deleteFavoriteById(idMeal)
         }
 

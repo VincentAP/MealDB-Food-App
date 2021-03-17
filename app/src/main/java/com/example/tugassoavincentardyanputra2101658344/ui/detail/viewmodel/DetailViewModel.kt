@@ -411,17 +411,22 @@ class DetailViewModel @Inject constructor(
         return Resource.empty(listOf(NoDataItem()))
     }
 
-    fun setFavorite() {
-        val favorite = mealItemResponse.toFavorite()
+    fun setFavorite(type: String) {
+        val isMostPopularFood = type == Constant.MOST_POPULAR_FOOD
+        val favorite = mealItemResponse.toFavorite(isMostPopularFood)
         favorite?.let {
             viewModelScope.launch {
+                if (type == Constant.MOST_POPULAR_FOOD) mostPopularFoodRepository.updateFavoriteField(true, it.idMeal)
+                else if (type == Constant.BEST_FOOD_OF_THE_DAY) foodOfTheDayRepository.updateFavoriteField(true, it.idMeal)
                 favoriteRepository.insertFavorite(it)
             }
         }
     }
 
-    fun deleteFavorite(idMeal: String) {
+    fun deleteFavorite(idMeal: String, type: String) {
         viewModelScope.launch {
+            if (type == Constant.MOST_POPULAR_FOOD) mostPopularFoodRepository.updateFavoriteField(false, idMeal)
+            else if (type == Constant.BEST_FOOD_OF_THE_DAY) foodOfTheDayRepository.updateFavoriteField(false, idMeal)
             favoriteRepository.deleteFavoriteById(idMeal)
         }
     }

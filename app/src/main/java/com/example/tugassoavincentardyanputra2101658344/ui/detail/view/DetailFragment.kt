@@ -31,6 +31,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class DetailFragment : BaseFullScreenDialogFragment() {
 
     private var binding: FragmentDetailBinding? = null
+
+    private var onFavoriteSelected: OnFavoriteSelected? = null
+
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private val detailViewModel: DetailViewModel by viewModels()
@@ -53,6 +56,10 @@ class DetailFragment : BaseFullScreenDialogFragment() {
         )
     )
 
+    fun setOnFavoriteSelected(onFavoriteSelected: OnFavoriteSelected) = apply {
+        this.onFavoriteSelected = onFavoriteSelected
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,6 +68,9 @@ class DetailFragment : BaseFullScreenDialogFragment() {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
         setupBottomSheet()
         isAddedToFavorite = isFavorite
+        binding?.imageAddToFavorite?.apply {
+            if (isFavorite) setImageResource(R.drawable.ic_favorite)
+        }
 
         if (isRandomFood) binding?.buttonRandom?.apply {
             visibility = View.VISIBLE
@@ -94,13 +104,16 @@ class DetailFragment : BaseFullScreenDialogFragment() {
                 if (isAddedToFavorite) setImageResource(R.drawable.ic_favorite)
                 else setImageResource(R.drawable.ic_unfavorite)
             }
-            if (isAddedToFavorite) detailViewModel.setFavorite()
+            if (isAddedToFavorite) detailViewModel.setFavorite(type)
             else detailViewModel.getIdMeal()?.let { id ->
-                detailViewModel.deleteFavorite(id)
+                detailViewModel.deleteFavorite(id, type)
             }
         }
 
-        binding?.imageBack?.setOnClickListener { dismiss() }
+        binding?.imageBack?.setOnClickListener {
+            onFavoriteSelected?.onFavoriteSelected(isAddedToFavorite)
+            dismiss()
+        }
 
         binding?.textSource?.setOnClickListener { openBrowser() }
 
@@ -158,8 +171,13 @@ class DetailFragment : BaseFullScreenDialogFragment() {
         }
     }
 
+    interface OnFavoriteSelected {
+        fun onFavoriteSelected(isFavorite: Boolean = false)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        onFavoriteSelected?.onFavoriteSelected(isAddedToFavorite)
         binding = null
     }
 
