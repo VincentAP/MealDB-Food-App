@@ -54,6 +54,7 @@ class NestedHorizontalRecyclerViewHolder(
     override fun bind(item: NestedHorizontalRecyclerItem, listener: (BaseItem, View) -> Unit) {
         if (item.isMpf) recyclerAdapter.submitList(item.listMpfItem)
         else recyclerAdapter.submitList(item.listCategoryItem)
+        recyclerAdapter.notifyDataSetChanged()
         item.applyContainerStyle(itemView)
 
         recyclerAdapter.setOnItemClicked { baseItem, view ->

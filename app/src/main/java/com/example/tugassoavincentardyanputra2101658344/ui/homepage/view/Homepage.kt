@@ -44,9 +44,6 @@ class Homepage : BaseActivity() {
     private val homepageViewModel: HomepageViewModelImpl by viewModels()
 
     private var isMostPopularFood = false
-    private var isFavoriteStateChanged = false
-    private var isFromFavoritePage = false
-    private var isFoodOfTheDayItem = false
 
     private val listener: (BaseItem, View) -> Unit = { item, view ->
         setOnClick(item, view)
@@ -98,7 +95,8 @@ class Homepage : BaseActivity() {
                             binding.recyclerView.visibility = View.VISIBLE
                         }
                         it.data?.let { item ->
-                            recyclerAdapter.submitList(item.toMutableList())
+                            recyclerAdapter.submitList(item)
+                            recyclerAdapter.notifyDataSetChanged()
                         }
                     }
                     Status.ERROR -> {
@@ -121,15 +119,7 @@ class Homepage : BaseActivity() {
                 Status.SUCCESS -> {
                     isMostPopularFood = true
                     it.data?.let { it1 ->
-                        if (!isFavoriteStateChanged && !isFromFavoritePage ||
-                            isFoodOfTheDayItem && !isFavoriteStateChanged
-                        ) {
-                            homepageViewModel.setData(it1)
-                            isFoodOfTheDayItem = false
-                        } else {
-                            isFromFavoritePage = false
-                            isFavoriteStateChanged = false
-                        }
+                        homepageViewModel.setData(it1)
                     }
                 }
                 Status.ERROR -> {
@@ -181,7 +171,6 @@ class Homepage : BaseActivity() {
             is MostPopularFoodItem -> {
                 when (view.id) {
                     R.id.imageFavorite -> {
-                        isFavoriteStateChanged = true
                         if (item.isFavoriteAfterClicked) homepageViewModel.setFavorite(
                             mostPopularFoodItem = item.mpfItem
                         ) else homepageViewModel.deleteFavorite(
@@ -195,6 +184,11 @@ class Homepage : BaseActivity() {
                             type = Constant.MOST_POPULAR_FOOD,
                             isFavorite = item.mpfItem.isFavorite
                         )
+                            .setOnFavoriteSelected(object : DetailFragment.OnFavoriteSelected {
+                                override fun onFavoriteSelected(isFavorite: Boolean) {
+                                    if (isFavorite) categoryViewModel.refresh()
+                                }
+                            })
                             .show(supportFragmentManager, DetailFragment.TAG)
                     }
                 }
@@ -202,7 +196,6 @@ class Homepage : BaseActivity() {
             is FoodOfTheDayItem -> {
                 when (view.id) {
                     R.id.imageFavorite -> {
-                        isFoodOfTheDayItem = true
                         if (item.isFavoriteAfterClicked) homepageViewModel.setFavorite(
                             foodOfTheDayItem = item.bfItem
                         ) else homepageViewModel.deleteFavorite(item.bfItem.idMeal)
@@ -212,6 +205,11 @@ class Homepage : BaseActivity() {
                             idMeal = item.bfItem.idMeal,
                             isFavorite = item.bfItem.isFavorite
                         )
+                            .setOnFavoriteSelected(object : DetailFragment.OnFavoriteSelected {
+                                override fun onFavoriteSelected(isFavorite: Boolean) {
+                                    if (isFavorite) categoryViewModel.refresh()
+                                }
+                            })
                             .show(supportFragmentManager, DetailFragment.TAG)
                     }
                 }
@@ -230,15 +228,12 @@ class Homepage : BaseActivity() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.getBooleanExtra(Constant.IS_DELETED, true)?.let {
-                    isFromFavoritePage = it
-                }
+                result.data?.getBooleanExtra(Constant.IS_DELETED, true)?.let {}
             }
         }
 
     override fun onResume() {
         super.onResume()
-        homepageViewModel.refresh()
         categoryViewModel.refresh()
         isMostPopularFood = false
     }

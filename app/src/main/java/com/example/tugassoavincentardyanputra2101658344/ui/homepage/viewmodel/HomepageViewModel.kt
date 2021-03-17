@@ -13,6 +13,7 @@ import com.example.tugassoavincentardyanputra2101658344.db.entity.BestFoodOfTheD
 import com.example.tugassoavincentardyanputra2101658344.db.entity.MostPopularFood
 import com.example.tugassoavincentardyanputra2101658344.foundation.BaseViewModel
 import com.example.tugassoavincentardyanputra2101658344.repository.FavoriteRepository
+import com.example.tugassoavincentardyanputra2101658344.repository.FoodOfTheDayRepository
 import com.example.tugassoavincentardyanputra2101658344.repository.MostPopularFoodRepository
 import com.example.tugassoavincentardyanputra2101658344.ui.homepage.viewholder.FeatureCategoryItem
 import com.example.tugassoavincentardyanputra2101658344.ui.homepage.viewholder.FoodOfTheDayItem
@@ -35,23 +36,29 @@ interface HomepageViewModel {
 @HiltViewModel
 class HomepageViewModelImpl @Inject constructor(
     private val favoriteRepository: FavoriteRepository,
+    private val foodOfTheDayRepository: FoodOfTheDayRepository,
     private val mostPopularFoodRepository: MostPopularFoodRepository
 ) : BaseViewModel() {
 
     private val _homepageItem: MutableLiveData<Resource<List<BaseItem>>> = MutableLiveData()
     val homepageItem: LiveData<Resource<List<BaseItem>>> = _homepageItem
 
+    private val initialItemList: MutableList<BaseItem> = mutableListOf()
+    private val categoryItemList: MutableList<BaseItem> = mutableListOf()
+    private val foodOfTheDayItemList: MutableList<BaseItem> = mutableListOf()
+    private val mostPopularFoodItemList: MutableList<BaseItem> = mutableListOf()
+
     private val baseItemList: MutableList<BaseItem> = mutableListOf()
 
     fun setInitialItem() {
-        baseItemList.add(
+        initialItemList.add(
             FoodTitleItem(
                 "Food Menu",
                 "Start cooking today!",
                 true
             )
         )
-        baseItemList.add(
+        initialItemList.add(
             HeaderSectionItem(
                 "Features",
                 "Challenge yourself! Generate random food for you to cook today."
@@ -61,7 +68,7 @@ class HomepageViewModelImpl @Inject constructor(
                 layoutMarginBottomDp(13)
             })
         )
-        baseItemList.add(
+        initialItemList.add(
             FeatureCategoryItem(
                 "https://www.themealdb.com/images/media/meals/uuuspp1468263334.jpg",
                 "Random food",
@@ -73,17 +80,29 @@ class HomepageViewModelImpl @Inject constructor(
         )
     }
 
-    fun refresh() {
-        baseItemList.clear()
-        setInitialItem()
+    private fun refresh() {
+        baseItemList.apply {
+            clear()
+            addAll(initialItemList)
+            addAll(categoryItemList)
+            addAll(foodOfTheDayItemList)
+            addAll(mostPopularFoodItemList)
+        }
+        _homepageItem.value = Resource.success(baseItemList)
     }
 
     fun setFavorite(
         foodOfTheDayItem: BestFoodOfTheDay? = null,
         mostPopularFoodItem: MostPopularFood? = null
     ) {
-        val favorite = if (foodOfTheDayItem != null) foodOfTheDayItem.toFavorite()
-        else {
+        val favorite = if (foodOfTheDayItem != null) {
+            foodOfTheDayItem.let {
+                viewModelScope.launch {
+                    foodOfTheDayRepository.updateFavoriteField(true, it.idMeal)
+                }
+                it.toFavorite()
+            }
+        } else {
             mostPopularFoodItem?.let {
                 viewModelScope.launch {
                     mostPopularFoodRepository.updateFavoriteField(true, it.idMeal)
@@ -114,7 +133,7 @@ class HomepageViewModelImpl @Inject constructor(
             .map { mapBaseItemData(it) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                _homepageItem.value = Resource.success(baseItemList)
+                refresh()
             }, {
                 it.printStackTrace()
                 _homepageItem.value = Resource.error("Unknown error", baseItemList)
@@ -125,14 +144,15 @@ class HomepageViewModelImpl @Inject constructor(
     private fun mapBaseItemData(baseItem: List<BaseItem>) {
         when (baseItem[0]) {
             is FeatureCategoryItem -> {
-                baseItemList.add(
+                categoryItemList.clear()
+                categoryItemList.add(
                     HeaderSectionItem("Categories")
                         .setContainerStyle(viewGroupStyle {
                             layoutMarginLeftDp(23)
                             layoutMarginBottomDp(10)
                         })
                 )
-                baseItemList.add(
+                categoryItemList.add(
                     NestedHorizontalRecyclerItem(
                         (baseItem as List<FeatureCategoryItem>)
                     ).setContainerStyle(viewGroupStyle {
@@ -141,7 +161,8 @@ class HomepageViewModelImpl @Inject constructor(
                 )
             }
             is FoodOfTheDayItem -> {
-                baseItemList.add(
+                foodOfTheDayItemList.clear()
+                foodOfTheDayItemList.add(
                     HeaderSectionItem("Food of the day")
                         .setContainerStyle(viewGroupStyle {
                             layoutMarginLeftDp(23)
@@ -149,11 +170,12 @@ class HomepageViewModelImpl @Inject constructor(
                         })
                 )
                 baseItem.forEach {
-                    baseItemList.add(it)
+                    foodOfTheDayItemList.add(it)
                 }
             }
             is MostPopularFoodItem -> {
-                baseItemList.add(
+                mostPopularFoodItemList.clear()
+                mostPopularFoodItemList.add(
                     HeaderSectionItem("Most popular food")
                         .setContainerStyle(viewGroupStyle {
                             layoutMarginLeftDp(23)
@@ -161,7 +183,7 @@ class HomepageViewModelImpl @Inject constructor(
                             layoutMarginTopDp(30)
                         })
                 )
-                baseItemList.add(
+                mostPopularFoodItemList.add(
                     NestedHorizontalRecyclerItem(
                         listMpfItem = (baseItem as List<MostPopularFoodItem>),
                         isMpf = true
